@@ -22,7 +22,7 @@ Este repositório contém um script bash para automatizar a criação e configur
 Para executar o script em modo interativo, utilize a opção `-i`:
 
 ```bash
-./script.sh -i
+./pycreate_project.sh -i
 ```
 
 O script irá solicitar as seguintes informações:
@@ -36,7 +36,7 @@ O script irá solicitar as seguintes informações:
 Para executar o script com opções de linha de comando, utilize as opções `-n` para o nome do projeto, `-v` para a versão do python no projeto e `-d` para uma string entre aspas contendo as depedências separadas por espaço:
 
 ```bash
-./script.sh -n <nome_do_projeto> -v <versão_python> -d "<dependência1> <dependência2> ..."
+./pycreate_project.sh -n <nome_do_projeto> -v <versão_python> -d "<dependência1> <dependência2> ..."
 ```
 
 ## 🔧 Tratamento de Erros
