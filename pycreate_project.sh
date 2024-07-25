@@ -5,6 +5,14 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Check if required commands are available
+for cmd in "poetry" "pyenv"; do
+    if ! command_exists "$cmd"; then
+        echo "Error: Required command '$cmd' is not installed. Please install it to continue."
+        exit 1
+    fi
+done
+
 # Function to create a new project
 create_project() {
     local project_name=$1
@@ -37,10 +45,12 @@ create_project() {
     # Use the specified Python version for Poetry
     poetry env use "$python_version" || { echo "Failed to set Poetry environment to use Python $python_version."; exit 1; }
 
-    # Add dependencies
-    for dep in "${dependencies[@]}"; do
-        poetry add "$dep" || { echo "Failed to add dependency: $dep"; exit 1; }
-    done
+    # Add dependencies if any are provided
+    if [ ${#dependencies[@]} -gt 0 ]; then
+        for dep in "${dependencies[@]}"; do
+            poetry add "$dep" || { echo "Failed to add dependency: $dep"; exit 1; }
+        done
+    fi
 
     echo "Project '$project_name' created successfully with Python $python_version."
 
@@ -72,12 +82,13 @@ while getopts ":n:v:d:i" opt; do
     esac
 done
 
-# If not in interactive mode, ensure all options are provided
-if [[ -z "$interactive_mode" && (-z "$project_name" || -z "$python_version" || -z "$dependencies") ]]; then
-    echo "Usage: $0 -n <project_name> -v <python_version> -d <dependencies>"
+# If not in interactive mode, ensure project name and Python version are provided
+if [[ -z "$interactive_mode" && (-z "$project_name" || -z "$python_version") ]]; then
+    echo "Usage: $0 -n <project_name> -v <python_version> [-d <dependencies>]"
     echo "Or: $0 -i for interactive mode"
     exit 1
 fi
+
 
 # Run the project creation function if not in interactive mode
 if [ -z "$interactive_mode" ]; then
