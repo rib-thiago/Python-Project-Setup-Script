@@ -18,7 +18,7 @@ Este repositório contém um script bash para automatizar a criação e configur
 - [Poetry](https://python-poetry.org/)
 - [Pyenv](https://github.com/pyenv/pyenv)
 - [GitHub Cli](https://cli.github.com/)
-- [ignr] (https://github.com/Antrikshy/ignr.py)
+- [ignr](https://github.com/Antrikshy/ignr.py)
 
 ## 💻 Uso
 
