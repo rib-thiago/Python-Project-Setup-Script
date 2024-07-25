@@ -8,12 +8,17 @@ Este repositório contém um script bash para automatizar a criação e configur
 - Definição da versão local do Python com Pyenv
 - Configuração do arquivo `pyproject.toml` para utilizar a versão correta do Python
 - Adição de dependências especificadas pelo usuário
+- Criação do Repositório Git
+- Criação do arquivo `.gitignore` com Ignr.py
+- Criação do Repositório no Github com GitHub Cli
 - Ativação do ambiente virtual do Poetry
 
 ## 📦 Requisitos
 
 - [Poetry](https://python-poetry.org/)
 - [Pyenv](https://github.com/pyenv/pyenv)
+- [GitHub Cli](https://cli.github.com/)
+- [ignr] (https://github.com/Antrikshy/ignr.py)
 
 ## 💻 Uso
 
