@@ -6,7 +6,7 @@ command_exists() {
 }
 
 # Check if required commands are available
-for cmd in "poetry" "pyenv"; do
+for cmd in "poetry" "pyenv" "git" "ignr" "gh"; do
     if ! command_exists "$cmd"; then
         echo "Error: Required command '$cmd' is not installed. Please install it to continue."
         exit 1
@@ -54,9 +54,33 @@ create_project() {
 
     echo "Project '$project_name' created successfully with Python $python_version."
 
+    # Initialize git repository
+    git init || { echo "Failed to initialize git repository."; exit 1; }
+
+    # Create .gitignore file
+    ignr -p python > .gitignore || { echo "Failed to create .gitignore file."; exit 1; }
+    echo ".gitignore created successfully."
+
+    # Add files to git and commit
+    git add . || { echo "Failed to add files to git."; exit 1; }
+    git commit -m "Commit Inicial" || { echo "Failed to commit files."; exit 1; }
+
+    # Create GitHub repository
+    if gh repo create "$project_name" --source=. --remote=origin --public --push; then
+        echo "GitHub repository created successfully."
+        # Push the initial commit to GitHub
+        git push -u origin main || { echo "Failed to push to GitHub."; exit 1; }
+    else
+        echo "Failed to create GitHub repository."; exit 1;
+    fi
+
+    echo "Git repository initialized and pushed to GitHub successfully."
+
     # Activate the virtual environment
     poetry shell || { echo "Failed to activate the virtual environment with Poetry."; exit 1; }
 
+    # Exit the script to prevent re-running after exiting the shell
+    exit 0
 }
 
 # Interactive mode
@@ -88,7 +112,6 @@ if [[ -z "$interactive_mode" && (-z "$project_name" || -z "$python_version") ]];
     echo "Or: $0 -i for interactive mode"
     exit 1
 fi
-
 
 # Run the project creation function if not in interactive mode
 if [ -z "$interactive_mode" ]; then
